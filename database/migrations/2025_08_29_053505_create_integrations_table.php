@@ -13,6 +13,18 @@ return new class extends Migration
     {
         Schema::create('integrations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('tenant_id') // Tenant-wise integration
+                ->constrained()
+                ->onDelete('cascade');
+
+            $table->string('name'); // Integration name (Gmail, Zoom, Slack)
+            $table->string('type'); // Integration type (email, calendar, messaging, payment)
+            $table->json('credentials')->nullable(); // API keys / OAuth tokens (encrypted)
+            $table->string('webhook_url')->nullable(); // Optional webhook URL for incoming events
+            $table->enum('status', ['active', 'inactive'])->default('active'); // Enable/Disable
+
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade'); // Who created integration
+
             $table->timestamps();
         });
     }
