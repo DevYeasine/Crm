@@ -31,6 +31,7 @@ return new class extends Migration
 
             $table->enum('status', ['active', 'inactive'])->default('active'); // Enable/Disable workflow
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

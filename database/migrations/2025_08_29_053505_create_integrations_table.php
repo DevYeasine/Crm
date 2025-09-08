@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade'); // Who created integration
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

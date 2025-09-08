@@ -13,13 +13,30 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            // Basic info
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('email_verified_at')->nullable(); // Email verification
+
+            // Multi-tenant support
             $table->foreignId('tenant_id')->nullable()->constrained()->onDelete('cascade');
+
+            // Optional contact info
+            $table->string('company_name')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('profile_photo')->nullable();
+
+            // Role & status
+            $table->string('status')->default('active'); // active / inactive / suspended
+            // Roles and permissions handled via package (Spatie or similar)
+
+            // Security
             $table->string('password');
-            $table->rememberToken();
+            $table->rememberToken(); // "Remember me" sessions
+
+            // Timestamps
             $table->timestamps();
+            $table->softDeletes(); // Soft delete
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
