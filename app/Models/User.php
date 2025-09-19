@@ -2,59 +2,70 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles; // Role/Permission support
+use Laravel\Fortify\TwoFactorAuthenticatable;
+use Laravel\Jetstream\HasProfilePhoto;
+use Laravel\Jetstream\HasTeams;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasApiTokens;
+
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory;
+    use HasProfilePhoto;
+    use HasTeams;
+    use Notifiable;
+    use TwoFactorAuthenticatable;
+    use HasRoles;
 
     /**
-     * Mass assignable attributes
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
-        'tenant_id',
-        'company_name',
-        'phone',
-        'profile_photo',
-        'status',
     ];
 
     /**
-     * Hidden attributes for serialization
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
         'remember_token',
+        'two_factor_recovery_codes',
+        'two_factor_secret',
     ];
 
     /**
-     * Casts
+     * The accessors to append to the model's array form.
+     *
+     * @var array<int, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+    protected $appends = [
+        'profile_photo_url',
     ];
 
     /**
-     * Tenant relation
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
      */
-    public function tenant()
+    protected function casts(): array
     {
-        return $this->belongsTo(Tenant::class);
-    }
-
-    /**
-     * Optional: Scope for tenant-specific queries
-     */
-    public function scopeTenant($query, $tenantId)
-    {
-        return $query->where('tenant_id', $tenantId);
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 }
