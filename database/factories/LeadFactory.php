@@ -16,15 +16,11 @@ class LeadFactory extends Factory
 
     public function definition(): array
     {
-        // Random tenant
-        $tenant = Tenant::inRandomOrder()->first() ?? Tenant::factory()->create();
 
-        // Random created_by user (এই tenant এর একজন)
-        $createdBy = User::where('tenant_id', $tenant->id)->inRandomOrder()->first() ?? User::factory()->create([
-            'tenant_id' => $tenant->id,
-        ]);
+        $tenant = Tenant::inRandomOrder()->first();
 
-        // Random assigned_to user (এই tenant এর অন্য একজন, না থাকলে null)
+        $createdBy = User::where('tenant_id', $tenant->id)->inRandomOrder()->first();
+
         $assignedTo = User::where('tenant_id', $tenant->id)->inRandomOrder()->first();
 
         return [

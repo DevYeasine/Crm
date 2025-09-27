@@ -15,10 +15,11 @@ class DealFactory extends Factory
 
     public function definition(): array
     {
-        $userIds = User::pluck('id')->toArray();
-        $tenantIds = Tenant::pluck('id')->toArray();
-        $contactIds = Contact::pluck('id')->toArray();
-        $leadIds = Lead::pluck('id')->toArray();
+        $tenant = Tenant::inRandomOrder()->first();
+        $user = User::where('tenant_id', $tenant->id)->inRandomOrder()->first();
+        
+        $contact = Contact::where('tenant_id', $tenant->id)->inRandomOrder()->first();
+        $lead = Lead::where('tenant_id', $tenant->id)->inRandomOrder()->first();
 
         return [
             'deal_name' => $this->faker->catchPhrase(),
@@ -27,13 +28,13 @@ class DealFactory extends Factory
             'stage' => $this->faker->randomElement(['prospecting','qualification','proposal','negotiation','closed won','closed lost']),
             'probability' => $this->faker->optional()->numberBetween(10,100),
             'close_date' => $this->faker->optional()->date(),
-            'contact_id' => $this->faker->optional()->randomElement($contactIds),
-            'lead_id' => $this->faker->optional()->randomElement($leadIds),
+            'contact_id' => $contact->id,
+            'lead_id' => $lead->id,
             'priority' => $this->faker->randomElement(['low','medium','high']),
             'deal_source' => $this->faker->optional()->word(),
-            'assigned_to' => $this->faker->optional()->randomElement($userIds),
-            'created_by' => $this->faker->randomElement($userIds),
-            'tenant_id' => $this->faker->randomElement($tenantIds),
+            'assigned_to' => $user->id,
+            'created_by' => $user->id,
+            'tenant_id' => $tenant->id,
             'created_at' => now(),
             'updated_at' => now(),
         ];
