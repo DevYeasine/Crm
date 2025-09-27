@@ -15,12 +15,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->withPersonalTeam()->create();
 
-        User::factory()->withPersonalTeam()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        
 
         $this->call(PermissionSeeder::class);
         $this->call(RoleSeeder::class);
+        $this->call(PlanSeeder::class);
+        $this->call(TenantSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(LeadSeeder::class);
+        $this->call(DealSeeder::class);
     }
 }

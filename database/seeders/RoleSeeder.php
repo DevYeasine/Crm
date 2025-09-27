@@ -11,7 +11,7 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         // Admin role
-        $admin = Role::firstOrCreate(['name' => 'admin']);
+        $admin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $admin->givePermissionTo(Permission::all());
 
         // Manager role
@@ -28,7 +28,7 @@ class RoleSeeder extends Seeder
             'view notes', 'create notes', 'edit notes', 'delete notes',
             'view automations', 'create automations',
             'view integrations',
-            'view team-members', 'add team-members'
+            'view team-members', 'create team-members'
         ]);
 
         // Team Leader role
