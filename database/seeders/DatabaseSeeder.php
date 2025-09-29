@@ -22,9 +22,16 @@ class DatabaseSeeder extends Seeder
         $this->call(PlanSeeder::class);
         $this->call(TenantSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(TeamSeeder::class);
         $this->call(ContactSeeder::class);
         $this->call(LeadSeeder::class);
         $this->call(DealSeeder::class);
         $this->call(ProjectSeeder::class);
+        $this->call(TaskSeeder::class);
+        $this->call(EmailSeeder::class);
+        $this->call(NoteSeeder::class);
+        $this->call(MeetingSeeder::class);
+        $this->call(AutomationSeeder::class);
+        $this->call(IntegrationSeeder::class);
     }
 }

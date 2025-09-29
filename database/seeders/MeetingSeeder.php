@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Meeting;
+use App\Models\Tenant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Lead;
-use App\Models\Tenant;
 
-class LeadSeeder extends Seeder
+class MeetingSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class LeadSeeder extends Seeder
         $tenants = Tenant::all();
 
         $tenants->each(function($tenant) {
-            Lead::factory()->count(rand(1, 2))->create([
+            Meeting::factory()->count(rand(1, 3))->create([
                 'tenant_id' => $tenant->id
             ]);
         });

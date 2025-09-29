@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('subject')->nullable();
             $table->longText('body')->nullable();
 
-            $table->enum('direction', ['outgoing', 'incoming']); 
+            $table->string('direction'); //['outgoing', 'incoming'] 
 
             $table->foreignId('from_user_id')->nullable()->constrained('users')->onDelete('set null'); 
             $table->string('from_email')->nullable();
@@ -32,7 +32,7 @@ return new class extends Migration
 
             $table->json('attachments')->nullable(); 
 
-            $table->enum('status', ['draft', 'sent', 'delivered', 'failed'])->default('draft');
+            $table->string('status')->default('draft');
 
             $table->foreignId('tenant_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 

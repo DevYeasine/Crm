@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Contact;
+use App\Models\Tenant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +14,12 @@ class ContactSeeder extends Seeder
      */
     public function run(): void
     {
-        Contact::factory()->count(10)->create();
+        $tenants = Tenant::all();
+
+        $tenants->each(function($tenant) {
+            Contact::factory()->count(rand(1, 2))->create([
+                'tenant_id' => $tenant->id
+            ]);
+        });
     }
 }

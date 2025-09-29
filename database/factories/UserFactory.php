@@ -27,7 +27,7 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $tenant = Tenant::inRandomOrder()->first();
+        
 
         return [
             // User credentials
@@ -39,8 +39,10 @@ class UserFactory extends Factory
             'current_team_id' => null, // optional, can be assigned later
             'profile_photo_path' => null, // optional, can add faker image path if needed
 
-            // Tenant link
-            'tenant_id' => $tenant->id,
+            'tenant_id' => function () {
+                $tenant = Tenant::inRandomOrder()->first();
+                return $tenant ? $tenant->id : Tenant::factory()->create()->id;
+            },
 
             // Company / tenant-related info
             'business_name' => $this->faker->company(),

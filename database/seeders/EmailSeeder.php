@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Email;
+use App\Models\Tenant;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Lead;
-use App\Models\Tenant;
 
-class LeadSeeder extends Seeder
+class EmailSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class LeadSeeder extends Seeder
         $tenants = Tenant::all();
 
         $tenants->each(function($tenant) {
-            Lead::factory()->count(rand(1, 2))->create([
+            Email::factory()->count(rand(1, 10))->create([
                 'tenant_id' => $tenant->id
             ]);
         });

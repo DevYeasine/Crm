@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Deal;
+use App\Models\Tenant;
 
 class DealSeeder extends Seeder
 {
@@ -13,7 +14,13 @@ class DealSeeder extends Seeder
      */
     public function run(): void
     {
-        Deal::factory()->count(10)->create();
+        $tenants = Tenant::all();
+
+        $tenants->each(function($tenant) {
+            Deal::factory()->count(rand(1, 2))->create([
+                'tenant_id' => $tenant->id
+            ]);
+        });
 
     }
 }

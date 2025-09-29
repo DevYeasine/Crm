@@ -18,7 +18,7 @@ class TenantFactory extends Factory
      * @return array<string, mixed>
      */
 
-    protected $model = \App\Models\Tenant::class;
+    protected $model = Tenant::class;
 
     public function definition(): array
     {
