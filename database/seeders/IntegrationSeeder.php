@@ -15,6 +15,18 @@ class IntegrationSeeder extends Seeder
     public function run(): void
     {
         
-        Integration::factory()->count(20)->create();
+        $tenants = Tenant::all();
+
+        $tenants->each(function($tenant) {
+            $users = $tenant->users; // User::where('tenant_id', $tenant->id)->get();
+
+            $users->each(function($user) use ($tenant) {
+                Integration::factory()->create([
+                    'tenant_id' => $tenant->id,
+                    'created_by' => $user->id,
+                    'name' => $user->name . "'s Integration",
+                ]);
+            });
+        });
     }
 }

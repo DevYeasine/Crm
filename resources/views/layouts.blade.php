@@ -184,6 +184,10 @@
     </div>
 
     <!-- Scripts -->
+    <!-- Bootstrap CSS already আছে ধরে নিচ্ছি -->
+<!-- Bootstrap JS Bundle with Popper -->
+
+    <script src="{{ asset('/scripts/utils/bootstrap.bundle.min.js') }}"></script>
     <script type="module" src="{{ asset('/scripts/main.js') }}"></script>
     <script>
       document.addEventListener('DOMContentLoaded', () => {

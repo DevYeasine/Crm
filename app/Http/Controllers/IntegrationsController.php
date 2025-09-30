@@ -11,7 +11,8 @@ class IntegrationsController extends Controller
      */
     public function index()
     {
-        return view('integrations');
+        $integrations = \App\Models\Integration::with(['tenant', 'creator'])->get();
+        return view('integrations', compact('integrations'));
     }
 
     /**

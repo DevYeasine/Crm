@@ -14,7 +14,8 @@ class UserSeeder extends Seeder
 
         $tenants->each(function($tenant) {
             $users = User::factory()->count(rand(1, 3))->create([
-                'tenant_id' => $tenant->id
+                'tenant_id' => $tenant->id,
+                'password' => bcrypt('password'),
             ]);
 
             $users->each(function($user) {
