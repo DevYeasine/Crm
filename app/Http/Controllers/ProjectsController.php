@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use Illuminate\Http\Request;
+
 
 class ProjectsController extends Controller
 {
@@ -11,7 +13,11 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        return view('projects');
+        $projects = Project::with(['deal', 'client', 'manager', 'creator'])
+        ->latest()
+        ->get();
+
+        return view('projects', compact('projects'));
     }
 
     /**

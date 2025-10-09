@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class TasksController extends Controller
@@ -11,7 +12,11 @@ class TasksController extends Controller
      */
     public function index()
     {
-        return view('tasks');
+        $tasks = Task::with(['project', 'lead', 'deal', 'contact', 'assignee', 'creator'])
+            ->latest()
+            ->get();
+
+        return view('tasks', compact('tasks'));
     }
 
     /**

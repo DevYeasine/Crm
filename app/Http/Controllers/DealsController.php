@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Deal;
 
 class DealsController extends Controller
 {
@@ -11,7 +12,8 @@ class DealsController extends Controller
      */
     public function index()
     {
-        return view('deals');
+        $deals = Deal::with(['lead', 'contact', 'assignedUser', 'creator'])->latest()->get();
+        return view('deals', compact('deals'));
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Lead;
 
 class LeadsController extends Controller
 {
@@ -11,7 +12,8 @@ class LeadsController extends Controller
      */
     public function index()
     {
-        return view('leads');
+        $leads = Lead::with('assignedUser')->latest()->paginate(10);
+        return view('leads', compact('leads'));
     }
 
     /**
