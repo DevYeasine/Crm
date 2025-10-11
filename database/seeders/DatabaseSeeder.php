@@ -33,5 +33,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MeetingSeeder::class);
         $this->call(AutomationSeeder::class);
         $this->call(IntegrationSeeder::class);
+        $this->call(EmailAccountSeeder::class);
     }
 }

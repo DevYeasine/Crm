@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Email;
+use App\Models\EmailAccount;
 use Illuminate\Http\Request;
 
 class EmailsController extends Controller
@@ -10,15 +11,29 @@ class EmailsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $emails = Email::where('direction', 'incoming')
-                   ->whereNull('deleted_at')
-                   ->latest()
-                   ->get();
+        $folder = $request->get('folder', 'inbox'); // default inbox
 
-        return view('emails', compact('emails'));
+        $emails = Email::query();
+
+        if ($folder == 'inbox') {
+            $emails->where('direction', 'incoming')
+                ->where('status', 'inbox');
+        } elseif ($folder == 'sent') {
+            $emails->where('direction', 'outgoing')
+                ->where('status', 'sent');
+        } elseif ($folder == 'trash') {
+            $emails->where('status', 'trash');
+        }
+
+        $emails = $emails->latest()->paginate(10);
+
+        $emailAccounts = EmailAccount::all(); // all connected email accounts
+
+        return view('email.emails', compact('emails', 'folder', 'emailAccounts'));
     }
+
 
     /**
      * Show the form for creating a new resource.

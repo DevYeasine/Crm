@@ -32,8 +32,7 @@ return new class extends Migration
             $table->foreignId('contact_id')->nullable()->constrained('contacts')->onDelete('cascade');
 
             $table->json('attachments')->nullable();
-
-            $table->enum('status', ['draft', 'sent', 'failed', 'queued'])->default('draft');
+            $table->enum('status', ['inbox', 'draft', 'sent', 'failed', 'queued', 'trash'])->default('draft');
             $table->enum('folder', ['inbox', 'sent', 'draft', 'trash'])->default('inbox');
 
             $table->boolean('is_read')->default(false);

@@ -27,6 +27,7 @@ Route::resource('/contacts', ContactsController::class);
 Route::resource('/tasks', TasksController::class);
 Route::resource('/events', EventsController::class);
 Route::resource('/emails', EmailsController::class);
+Route::get('emails/folder/{folder}', [EmailsController::class, 'index'])->name('emails.folder');
 Route::resource('/automations', AutomationsController::class);
 Route::resource('/integrations', IntegrationsController::class);
 Route::resource('/team-members', TeamMembersController::class);
