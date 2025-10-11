@@ -1,54 +1,74 @@
 @extends('layouts')
 
 @section('content')
+
 <div class="row">
     
     {{-- Main email content (list / detail) --}}
     <div class="col-md-9">
-        <h3>Emails ({{ ucfirst($folder) }})</h3>
-        <ul class="list-group">
-            @foreach($emails as $email)
-    <li class="list-group-item d-flex justify-content-between align-items-center" 
-        data-bs-toggle="modal" data-bs-target="#emailModal{{ $email->id }}">
-        <!-- Left: profile image -->
-        <div class="email-left me-3">
-            <img src="https://via.placeholder.com/40" alt="Profile" class="rounded-circle">
-        </div>
-
-        <!-- Middle: name & subject -->
-        <div class="email-middle flex-grow-1">
-            <div><strong>{{ $email->from_email }}</strong></div>
-            <div>{{ Str::limit($email->subject, 50) }}</div>
-        </div>
-
-        <!-- Right: actions -->
-        <div class="email-right text-end">
-            @if($email->priority ?? false)
-                <span class="badge bg-warning text-dark">Priority</span>
-            @endif
-        </div>
-    </li>
-
-    <!-- Modal -->
-    <div class="modal fade" id="emailModal{{ $email->id }}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">{{ $email->subject }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="d-flex align-items-center justify-content-between mb-3 p-2 border-bottom">
+            <h4 class="mb-0">Inbox</h4>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-primary btn-sm" id="composeBtn">
+                    <i class="bi bi-pencil-square"></i> Compose
+                </button>
+                <input type="text" class="form-control form-control-sm" placeholder="Search emails" id="emailSearch" style="width: 200px;">
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Filter
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="?folder=inbox">All</a></li>
+                        <li><a class="dropdown-item" href="?folder=read">Read</a></li>
+                        <li><a class="dropdown-item" href="?folder=unread">Unread</a></li>
+                    </ul>
                 </div>
-                <div class="modal-body">
-                    <p><strong>From:</strong> {{ $email->from_email }}</p>
-                    <p>{{ $email->body }}</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                </div>
+                <button class="btn btn-light btn-sm">
+                    <i class="bi bi-gear"></i>
+                </button>
             </div>
         </div>
-    </div>
-@endforeach
-        </ul>
+
+        @foreach($emails as $email)
+            <div class="d-flex align-items-center justify-content-between p-2 border-bottom email-row 
+                {{ $email->is_read == 1 ? 'unread-mail' : '' }}" 
+                data-email-id="{{ $email->id }}" style="cursor:pointer;">
+                
+                <!-- Part 1: Profile pic + name + email -->
+                <div class="d-flex align-items-center" style="width: 30%;">
+                    <img src="https://ui-avatars.com/api/?name={{ $email->from_email }}" class="rounded-circle me-2" width="40" height="40">
+                    <div>
+                        <div class="fw-bold">{{ $email->from_email }}</div>
+                        <small>{{ $email->from_name ?? 'No Name' }}</small>
+                    </div>
+                </div>
+
+                <!-- Part 2: Subject + time + body preview -->
+                <div style="width: 50%;">
+                    <div class="fw-bold">{{ $email->subject }}</div>
+                    <small class="text-muted">{{ Str::limit($email->body, 60) }}</small>
+                    <div><small class="text-muted">{{ $email->created_at->format('d M, H:i') }}</small></div>
+                </div>
+
+                <!-- Part 3: Action icons -->
+                <div class="d-flex align-items-center gap-2">
+                    <button class="btn btn-outline-success btn-sm convertBtn" data-email-id="{{ $email->id }}">
+                        <i class="bi bi-diagram-3"></i>
+                    </button>
+                    <button class="btn btn-outline-primary btn-sm markReadBtn" data-email-id="{{ $email->id }}">
+                        <i class="bi bi-envelope-open"></i>
+                    </button>
+                    <form action="{{ route('emails.destroy', $email->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-outline-danger btn-sm" type="submit">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @endforeach
+
 
         <!-- Pagination -->
         <div class="mt-3">

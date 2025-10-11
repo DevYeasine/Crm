@@ -35,9 +35,11 @@
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
+    
 </head>
 
 <body data-page="dashboard" class="admin-layout">
+ 
     <!-- Loading Screen -->
     <div id="loading-screen" class="loading-screen">
         <div class="loading-spinner">
