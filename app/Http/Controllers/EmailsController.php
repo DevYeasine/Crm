@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Email;
 use Illuminate\Http\Request;
 
 class EmailsController extends Controller
@@ -11,7 +12,12 @@ class EmailsController extends Controller
      */
     public function index()
     {
-        return view('emails');
+        $emails = Email::where('direction', 'incoming')
+                   ->whereNull('deleted_at')
+                   ->latest()
+                   ->get();
+
+        return view('emails', compact('emails'));
     }
 
     /**
