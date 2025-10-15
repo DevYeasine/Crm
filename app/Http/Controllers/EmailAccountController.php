@@ -2,35 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Email;
-use App\Models\EmailAccount;
-use App\Models\User;
 use Illuminate\Http\Request;
 
-
-class EmailsController extends Controller
+class EmailAccountController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $tenantId = auth()->user()->tenant_id;
-        $emailAccounts = EmailAccount::where('tenant_id', $tenantId)->get();
-
-        if($emailAccounts->isEmpty()){
-            return view('email.connect-email');
-        }
-
-        $folder = $request->get('folder', 'inbox'); 
-        $emails = Email::where('email_account_id', $emailAccounts->first()->id)
-                    ->where('status', $folder)
-                    ->latest()
-                    ->paginate(10);
-
-        return view('email.emails', compact('emails', 'emailAccounts', 'folder'));
+        //
     }
-
 
     /**
      * Show the form for creating a new resource.

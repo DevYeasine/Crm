@@ -19,16 +19,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/dashboard', DashboardController::class);
-Route::resource('/leads', LeadsController::class);
-Route::resource('/deals', DealsController::class);
-Route::resource('/projects', ProjectsController::class);
-Route::resource('/contacts', ContactsController::class);
-Route::resource('/tasks', TasksController::class);
-Route::resource('/events', EventsController::class);
-Route::resource('/emails', EmailsController::class);
-Route::get('emails/folder/{folder}', [EmailsController::class, 'index'])->name('emails.folder');
-Route::resource('/automations', AutomationsController::class);
-Route::resource('/integrations', IntegrationsController::class);
-Route::resource('/team-members', TeamMembersController::class);
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/dashboard', DashboardController::class);
+    Route::resource('/leads', LeadsController::class);
+    Route::resource('/deals', DealsController::class);
+    Route::resource('/projects', ProjectsController::class);
+    Route::resource('/contacts', ContactsController::class);
+    Route::resource('/tasks', TasksController::class);
+    Route::resource('/events', EventsController::class);
+    Route::resource('/emails', EmailsController::class);
+    Route::get('emails/folder/{folder}', [EmailsController::class, 'index'])->name('emails.folder');
+    Route::get('emails/connect/{provider}', [EmailsController::class, 'connect'])->name('email.connect');
+
+    Route::resource('/automations', AutomationsController::class);
+    Route::resource('/integrations', IntegrationsController::class);
+    Route::resource('/team-members', TeamMembersController::class);
+});
+
+
 
