@@ -19,7 +19,7 @@ class EmailsController extends Controller
         $emailAccounts = EmailAccount::where('tenant_id', $tenantId)->get();
 
         if($emailAccounts->isEmpty()){
-            return view('email.connect-email');
+            return redirect()->route('emailconnect.index');
         }
 
         $folder = $request->get('folder', 'inbox'); 

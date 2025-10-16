@@ -11,7 +11,7 @@ class EmailAccountController extends Controller
      */
     public function index()
     {
-        //
+        return view('email.connect-email');
     }
 
     /**

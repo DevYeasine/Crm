@@ -12,7 +12,8 @@ use App\Http\Controllers\{
     EventsController,
     EmailsController,
     IntegrationsController,
-    TeamMembersController
+    TeamMembersController,
+    EmailAccountController
 };
 
 Route::get('/', function () {
@@ -28,6 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/tasks', TasksController::class);
     Route::resource('/events', EventsController::class);
     Route::resource('/emails', EmailsController::class);
+    Route::resource('/emailconnect', EmailAccountController::class);
     Route::get('emails/folder/{folder}', [EmailsController::class, 'index'])->name('emails.folder');
     Route::get('emails/connect/{provider}', [EmailsController::class, 'connect'])->name('email.connect');
 
