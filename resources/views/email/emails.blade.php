@@ -26,6 +26,12 @@
                 <button class="btn btn-light btn-sm">
                     <i class="bi bi-gear"></i>
                 </button>
+                <form action="{{ route('emails.sync') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fas fa-sync"></i> Sync Emails
+                    </button>
+                </form>
             </div>
         </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\EmailAccount;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
+use Exception;
 
 class EmailAccountController extends Controller
 {
@@ -65,38 +66,39 @@ class EmailAccountController extends Controller
     }
 
     public function redirectToGoogle()
-    {
-        return Socialite::driver('google')
-            ->scopes([
-                'openid',
-                'email',
-                'profile',
-                'https://mail.google.com/',
-            ])
+{
+    return Socialite::driver('google')
+            ->scopes(['https://www.googleapis.com/auth/gmail.readonly'])
             ->redirect();
-    }
+}
 
     public function handleGoogleCallback()
     {
-        $googleUser = Socialite::driver('google')->stateless()->user();
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
 
-        $user = auth()->user();
-        $tenantId = $user->tenant_id;
+            $user = auth()->user();
+            $tenantId = $user->tenant_id;
 
-        EmailAccount::updateOrCreate(
-            [
-                'user_id' => $user->id,
-                'tenant_id' => $tenantId,
-                'email' => $googleUser->getEmail(),
-                'provider' => 'gmail',
-            ],
-            [
-                'access_token' => $googleUser->token,
-                'refresh_token' => $googleUser->refreshToken,
-                'token_expires_at' => now()->addSeconds($googleUser->expiresIn),
-            ]
-        );
+            EmailAccount::updateOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'tenant_id' => $tenantId,
+                    'email' => $googleUser->getEmail(),
+                    'provider' => 'gmail',
+                ],
+                [
+                    'access_token' => $googleUser->token,
+                    'refresh_token' => $googleUser->refreshToken,
+                    'token_expires_at' => now()->addSeconds($googleUser->expiresIn),
+                ]
+            );
 
-        return redirect()->route('emails.index')->with('success', 'Gmail connected successfully!');
+            return redirect()->route('emails.index')->with('success', 'Gmail connected successfully!');
+
+        } catch (Exception $e) {
+            return redirect()->route('emailconnect.index')
+                ->with('error', 'Failed to connect Gmail: ' . $e->getMessage());
+        }
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Email;
 use App\Models\EmailAccount;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Services\GmailService;
 
 
 class EmailsController extends Controller
@@ -31,6 +32,21 @@ class EmailsController extends Controller
         return view('email.emails', compact('emails', 'emailAccounts', 'folder'));
     }
 
+    public function syncEmails()
+{
+    $tenantId = auth()->user()->tenant_id;
+    $emailAccount = EmailAccount::where('tenant_id', $tenantId)->first();
+    
+    if (!$emailAccount) {
+        return redirect()->back()->with('error', 'No email account connected');
+    }
+    
+    $gmailService = new GmailService();
+    $emailsSynced = $gmailService->fetchEmails($emailAccount);
+    
+    return redirect()->route('emails.index')
+        ->with('success', "Synced {$emailsSynced} new emails");
+}
 
     /**
      * Show the form for creating a new resource.

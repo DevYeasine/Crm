@@ -28,11 +28,11 @@ class DatabaseSeeder extends Seeder
         $this->call(DealSeeder::class);
         $this->call(ProjectSeeder::class);
         $this->call(TaskSeeder::class);
+        $this->call(EmailAccountSeeder::class);
         $this->call(EmailSeeder::class);
         $this->call(NoteSeeder::class);
         $this->call(MeetingSeeder::class);
         $this->call(AutomationSeeder::class);
         $this->call(IntegrationSeeder::class);
-        $this->call(EmailAccountSeeder::class);
     }
 }

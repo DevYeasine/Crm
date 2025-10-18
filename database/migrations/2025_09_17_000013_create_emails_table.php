@@ -43,6 +43,7 @@ return new class extends Migration
 
             $table->unsignedBigInteger('parent_email_id')->nullable(); // For threading
             $table->foreign('parent_email_id')->references('id')->on('emails')->onDelete('cascade');
+            $table->foreignId('email_account_id')->nullable()->constrained('email_accounts')->onDelete('cascade');
 
             $table->foreignId('tenant_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
 

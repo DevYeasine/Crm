@@ -175,10 +175,10 @@
                 </div>
 
                 <!-- Team Dropdown -->
-                @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
+                {{-- @if (Laravel\Jetstream\Jetstream::hasTeamFeatures())
                     <div class="dropdown me-2">
                         <button class="btn btn-outline-secondary d-flex align-items-center" type="button" data-bs-toggle="dropdown">
-                            {{ Auth::user()->currentTeam->name }}
+                            {{ Auth::user()->currentTeam ? Auth::user()->currentTeam->name : 'No Team' }}
                             <i class="bi bi-chevron-down ms-1"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
@@ -203,7 +203,7 @@
                             @endif
                         </ul>
                     </div>
-                @endif
+                @endif --}}
 
                 <!-- User Profile Dropdown -->
                 <div class="dropdown">
